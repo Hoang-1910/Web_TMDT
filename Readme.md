@@ -12,3 +12,8 @@
 # Khi clone dự án
 - chạy lệnh trong thư mục backend: composer install
 - Thêm file .env
+
+# Cài đặt Sanctum để dùng API
+- composer require laravel/sanctum
+- php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+- php artisan migrate
