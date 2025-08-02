@@ -17,3 +17,7 @@
 - composer require laravel/sanctum
 - php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
 - php artisan migrate
+
+# Cài route và dử dụng bên frontend
+- npm install axios
+- npm install react-router-dom
