@@ -18,13 +18,5 @@ class AdminUserSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        DB::table('users')->insert([
-            'name' => 'Hoang',
-            'email' => 'vhoang1015@gmail.com',
-            'password' => Hash::make('hoang1234'), // đổi mật khẩu nếu muốn
-            'role' => 'admin',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
     }
 }
