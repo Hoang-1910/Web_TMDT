@@ -36,4 +36,4 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 });
     Route::apiResource('products', ProductImageController::class);
     Route::apiResource('productImages', ProductImageController::class);
-});
+
