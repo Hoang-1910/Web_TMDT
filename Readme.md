@@ -21,3 +21,7 @@
 # Cài route và dử dụng bên frontend
 - npm install axios
 - npm install react-router-dom
+
+# Cài TailWind CSS
+- npm install -D tailwindcss@3.4.1 postcss autoprefixer
+- npx tailwindcss init -p
