@@ -33,6 +33,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
     Route::get('/orders/{id}', [OrderController::class, 'show']);
     Route::post('/orders', [OrderController::class, 'store']);
     Route::put('/orders/{id}', [OrderController::class, 'update']); // Chỉ admin mới nên gọi
-    Route::apiResource('products', ProductImageController::class);
+    Route::apiResource('products', ProductController::class);
     Route::apiResource('productImages', ProductImageController::class);
 
+});

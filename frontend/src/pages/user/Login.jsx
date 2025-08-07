@@ -21,45 +21,69 @@ export default function Login() {
       alert("Đăng nhập thất bại: " + JSON.stringify(data.errors));
     } else {
       alert("Đăng nhập thành công!");
-      // localStorage.setItem("token", data.token);
       navigate("/");
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-      <div className="bg-white rounded-xl shadow-xl p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center text-indigo-600">Đăng nhập</h2>
-        <form onSubmit={handleLogin} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Mật khẩu"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button
-            type="submit"
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-md transition duration-300"
-          >
-            Đăng nhập
-          </button>
-        </form>
-        <p className="mt-4 text-center text-gray-500">
-          Chưa có tài khoản?{" "}
-          <button className="text-indigo-600 hover:underline" onClick={() => navigate("/register")}>
-            Đăng ký ngay
-          </button>
-        </p>
+    <div className="flex min-h-screen bg-gray-50">
+      {/* Bên trái: hình ảnh thương hiệu hoặc mô tả */}
+      <div className="hidden md:flex w-1/2 bg-gradient-to-br from-indigo-600 to-purple-600 items-center justify-center p-10">
+        <div className="text-white text-center">
+          <h1 className="text-4xl font-bold mb-4">Chào mừng đến với ShopX</h1>
+          <p className="text-lg">Trải nghiệm mua sắm tốt nhất dành cho bạn.</p>
+          <img src="/assets/login-side-image.svg" alt="Shopping" className="mt-8 w-3/4 mx-auto" />
+        </div>
+      </div>
+
+      {/* Bên phải: form login */}
+      <div className="flex w-full md:w-1/2 items-center justify-center">
+        <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md">
+          <h2 className="text-2xl font-bold text-center text-indigo-600 mb-6">Đăng nhập tài khoản</h2>
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+
+            <input
+              type="password"
+              placeholder="Mật khẩu"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+
+            <div className="flex items-center justify-between text-sm text-gray-500">
+              <label>
+                <input type="checkbox" className="mr-2" /> Ghi nhớ đăng nhập
+              </label>
+              <a href="#" className="text-indigo-600 hover:underline">
+                Quên mật khẩu?
+              </a>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-md font-semibold transition duration-300"
+            >
+              Đăng nhập
+            </button>
+          </form>
+
+          <p className="mt-6 text-center text-sm text-gray-600">
+            Chưa có tài khoản?{" "}
+            <button onClick={() => navigate("/register")} className="text-indigo-600 hover:underline">
+              Đăng ký ngay
+            </button>
+          </p>
+        </div>
       </div>
     </div>
   );
