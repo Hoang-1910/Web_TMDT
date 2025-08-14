@@ -8,10 +8,19 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\WithlistController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductImageController;
+use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\User\ProductController as UserProductController;
+use App\Http\Controllers\User\HomeController;
 
+Route::get('/', [HomeController::class, 'index']);
 // Routes for user 
 Route::post('/register-user', [AuthController::class, 'registerUser']);
 Route::post('/login-user', [AuthController::class, 'loginUser']);
+Route::get('/products', [UserProductController::class, 'index']);
+Route::get('/products/{id}', [UserProductController::class, 'show']);
+Route::get('/products/category/{categoryId}', [UserProductController::class, 'getByCategory']);
+Route::get('/products/brand/{brandId}', [UserProductController::class, 'getByBrand']);
+
 // Route for admin
 Route::post('/register-admin', [AuthController::class, 'registerAdmin']);
 Route::post('/login-admin', [AuthController::class, 'loginAdmin']);
