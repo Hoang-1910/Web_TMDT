@@ -8,16 +8,11 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\WithlistController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductImageController;
-
+use App\Http\Controllers\Admin\ProductController;
 // Routes for user 
 Route::post('/register-user', [AuthController::class, 'registerUser']);
-Route::post('/login-user', [AuthController::class, 'loginUser']);
-// Route for admin
-Route::post('/register-admin', [AuthController::class, 'registerAdmin']);
-Route::post('/login-admin', [AuthController::class, 'loginAdmin']);
-
+Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
-
 
 // Routes for admin
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {

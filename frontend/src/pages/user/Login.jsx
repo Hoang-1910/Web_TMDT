@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -6,9 +6,22 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  // Nếu đã đăng nhập thì redirect
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const role = localStorage.getItem("role");
+      if (role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+    }
+  }, [navigate]);
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:8000/api/login-user", {
+    const res = await fetch("http://localhost:8000/api/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -17,17 +30,27 @@ export default function Login() {
     });
 
     const data = await res.json();
+
     if (!res.ok) {
-      alert("Đăng nhập thất bại: " + JSON.stringify(data.errors));
+      alert("Đăng nhập thất bại: " + (data.message || "Vui lòng thử lại"));
     } else {
+      // Lưu token và role
+      localStorage.setItem("token", data.token); // backend trả token
+      localStorage.setItem("role", data.user.role);
+
       alert("Đăng nhập thành công!");
-      navigate("/");
+
+      // Redirect theo role
+      if (data.user.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     }
   };
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* Bên trái: hình ảnh thương hiệu hoặc mô tả */}
       <div className="hidden md:flex w-1/2 bg-gradient-to-br from-indigo-600 to-purple-600 items-center justify-center p-10">
         <div className="text-white text-center">
           <h1 className="text-4xl font-bold mb-4">Chào mừng đến với ShopX</h1>
@@ -36,7 +59,6 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Bên phải: form login */}
       <div className="flex w-full md:w-1/2 items-center justify-center">
         <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md">
           <h2 className="text-2xl font-bold text-center text-indigo-600 mb-6">Đăng nhập tài khoản</h2>
