@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\User\ProductController as UserProductController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\Admin\DashboardController;
 
 Route::get('/', [HomeController::class, 'index']);
 // Routes for user 
@@ -28,21 +29,22 @@ Route::post('/login-admin', [AuthController::class, 'loginAdmin']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 
 
-// Routes for admin
-Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+// Admin Routes
+Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+    
+    // Categories
     Route::apiResource('categories', CategoryController::class);
-    Route::apiResource('stocks', StockController::class);
+    
+    // Brands
     Route::apiResource('brands', BrandController::class);
-
-    Route::get('/wishlists', [WithlistController::class, 'index']);
-    Route::post('/wishlists', [WithlistController::class, 'store']);
-    Route::delete('/wishlists/{product_id}', [WithlistController::class, 'destroy']);
-
-    Route::get('/orders', [OrderController::class, 'index']);
-    Route::get('/orders/{id}', [OrderController::class, 'show']);
-    Route::post('/orders', [OrderController::class, 'store']);
-    Route::put('/orders/{id}', [OrderController::class, 'update']); // Chỉ admin mới nên gọi
+    
+    // Products
     Route::apiResource('products', ProductController::class);
-    Route::apiResource('productImages', ProductImageController::class);
-
 });
+
+
+// Public Routes
+Route::get('/categories', [CategoryController::class, 'publicIndex']);
+Route::get('/brands', [BrandController::class, 'publicIndex']);
