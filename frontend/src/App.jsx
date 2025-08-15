@@ -13,10 +13,21 @@ import BrandList from './pages/admin/brands/BrandList';
 import BrandForm from './pages/admin/brands/BrandForm';
 import CategoryList from './pages/admin/categories/CategoryList';
 import CategoryForm from './pages/admin/categories/CategoryForm';
+import { Routes, Route } from "react-router-dom";
+import UserLayout from "./components/user/UserLayout";
+import AdminLayout from "./components/admin/AdminLayout";
+
+import Home from "./pages/user/Home";
+import Login from "./pages/user/Login";
+import Register from "./pages/user/Register";
+import Dashboard from "./pages/admin/Dashboard";
+import Products from "./pages/admin/Products";
+import ProductForm from "./pages/admin/ProductForm";
 
 function App() {
   return (
     <Routes>
+      {/* Khách hàng */}
       <Route element={<UserLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -38,6 +49,7 @@ function App() {
               </Routes>
           </ProtectedRoute>
         } />
+        <Route path="/logout" element={<handleLogout />} />
       </Route>
     </Routes>
   );

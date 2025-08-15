@@ -12,7 +12,7 @@ class AdminUserSeeder extends Seeder
     {
         DB::table('users')->insert([
             'name' => 'Hoang',
-            'email' => 'bhoang1910@gmail.com',
+            'email' => 'vhoang1910@gmail.com',
             'password' => Hash::make('hoang1234'), // đổi mật khẩu nếu muốn
             'role' => 'admin',
             'created_at' => now(),

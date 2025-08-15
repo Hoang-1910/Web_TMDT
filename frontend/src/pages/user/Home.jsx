@@ -1,7 +1,6 @@
 // src/pages/user/Home.jsx
 import { useEffect, useState } from "react";
 import axios from "axios";
-import UserLayout from "@/components/user/UserLayout";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -14,7 +13,6 @@ export default function Home() {
   }, []);
 
   return (  
-    <UserLayout>
       <div className="bg-gray-100 min-h-screen">
         {/* Banner */}
         <div className="bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-12 px-6 text-center">
@@ -60,6 +58,5 @@ export default function Home() {
           </div>
         </section>
       </div>
-    </UserLayout>
   );
 }
