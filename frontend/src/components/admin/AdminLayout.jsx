@@ -7,6 +7,7 @@ const AdminLayout = ({ children }) => {
         { path: '/admin/dashboard', label: 'Dashboard', icon: 'fas fa-tachometer-alt' },
         { path: '/admin/products', label: 'Products', icon: 'fas fa-box' },
         { path: '/admin/categories', label: 'Categories', icon: 'fas fa-list' },
+        { path: '/admin/brands', label: 'Brands', icon: 'fas fa-tag' },
         { path: '/admin/orders', label: 'Orders', icon: 'fas fa-shopping-cart' },
         { path: '/admin/users', label: 'Users', icon: 'fas fa-users' },
     ];

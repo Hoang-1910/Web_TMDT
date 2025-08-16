@@ -24,14 +24,33 @@ const Login = () => {
         setError('');
 
         try {
-            const response = await axios.post('http://localhost:8000/api/login-admin', formData);
+            // Add withCredentials to handle CORS with credentials
+            const response = await axios.post('http://localhost:8000/api/login', formData, {
+                withCredentials: true,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
             
-            if (response.data.token) {
-                localStorage.setItem('admin_token', response.data.token);
-                localStorage.setItem('admin_data', JSON.stringify(response.data.admin));
+            console.log('Login response:', response.data); // Debug response
+
+            if (response.data.user && response.data.token) {
+                // Check if user is admin
+                if (response.data.user.role !== 'admin') {
+                    setError('Access denied. Admin only.');
+                    return;
+                }
+
+                // Store token with Bearer prefix
+                localStorage.setItem('admin_token', `Bearer ${response.data.token}`);
+                localStorage.setItem('admin_data', JSON.stringify(response.data.user));
+                
+                // Navigate to dashboard
                 navigate('/admin/dashboard');
             }
         } catch (err) {
+            console.error('Login error:', err); // Debug error
             setError(err.response?.data?.message || 'Login failed');
         } finally {
             setLoading(false);
@@ -89,7 +108,7 @@ const Login = () => {
 
                     {/* Error Message */}
                     {error && (
-                        <div className="text-red-500 text-sm text-center">
+                        <div className="text-red-500 text-sm text-center bg-red-50 p-3 rounded">
                             {error}
                         </div>
                     )}

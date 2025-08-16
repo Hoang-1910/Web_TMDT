@@ -56,7 +56,7 @@
             <h2 class="text-2xl font-bold mb-4">Categories</h2>
             <div class="grid grid-cols-6 gap-4">
                 @foreach($categories as $category)
-                <a href="{{ route('products.category', $category->id) }}" 
+                <a 
                    class="bg-white p-4 rounded-lg shadow-md text-center hover:shadow-lg transition">
                     <i class="fas fa-folder mb-2 text-2xl text-blue-600"></i>
                     <p>{{ $category->name }}</p>

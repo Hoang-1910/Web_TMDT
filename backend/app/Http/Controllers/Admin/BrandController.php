@@ -36,7 +36,7 @@ class BrandController extends Controller
 
         $data = $request->validate([
             'name' => 'required|unique:brands,name,' . $id,
-            'slug' => 'required|unique:brands,slug,' . $id,
+            'slug' => 'nullable|unique:brands,slug,' . $id,
             'logo' => 'nullable|string',
             'description' => 'nullable|string',
         ]);

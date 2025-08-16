@@ -16,29 +16,56 @@ const BrandList = () => {
         try {
             const token = localStorage.getItem('admin_token');
             const response = await axios.get('http://localhost:8000/api/admin/brands', {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: { 
+                    Authorization: token,
+                    Accept: 'application/json'
+                }
             });
             setBrands(response.data);
+            setLoading(false);
         } catch (error) {
             setError('Failed to fetch brands');
-        } finally {
             setLoading(false);
+            console.error('Error:', error);
         }
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('Are you sure you want to delete this brand?')) {
-            try {
-                const token = localStorage.getItem('admin_token');
-                await axios.delete(`http://localhost:8000/api/admin/brands/${id}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-                fetchBrands();
-            } catch (error) {
-                setError('Failed to delete brand');
-            }
+        if (!window.confirm('Are you sure you want to delete this brand?')) {
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('admin_token');
+            await axios.delete(`http://localhost:8000/api/admin/brands/${id}`, {
+                headers: { 
+                    Authorization: token,
+                    Accept: 'application/json'
+                }
+            });
+            fetchBrands();
+        } catch (error) {
+            console.error('Failed to delete brand:', error);
         }
     };
+
+    if (loading) {
+        return (
+            <AdminLayout>
+                <div className="flex justify-center items-center h-screen">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                </div>
+            </AdminLayout>
+        );
+    }
+
+    if (error) {
+        return (
+            <AdminLayout>
+                <div className="p-6 text-red-500 text-center">{error}</div>
+            </AdminLayout>
+        );
+    }
 
     return (
         <AdminLayout>
@@ -53,51 +80,49 @@ const BrandList = () => {
                     </Link>
                 </div>
 
-                {loading ? (
-                    <div className="text-center">Loading...</div>
-                ) : error ? (
-                    <div className="text-red-500 text-center">{error}</div>
-                ) : (
-                    <div className="bg-white rounded-lg shadow-sm border">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead>
-                                <tr className="bg-gray-50">
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                        Name
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                        Products Count
-                                    </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                                        Actions
-                                    </th>
+                <div className="bg-white rounded-lg shadow overflow-hidden">
+                    <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Name
+                                </th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Products Count
+                                </th>
+                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                            {brands.map((brand) => (
+                                <tr key={brand.id} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        {brand.name}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        {brand.products_count || 0}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <Link
+                                            to={`/admin/brands/edit/${brand.id}`}
+                                            className="text-blue-600 hover:text-blue-900 mr-4"
+                                        >
+                                            Edit
+                                        </Link>
+                                        <button
+                                            onClick={() => handleDelete(brand.id)}
+                                            className="text-red-600 hover:text-red-900"
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200">
-                                {brands.map((brand) => (
-                                    <tr key={brand.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4">{brand.name}</td>
-                                        <td className="px-6 py-4">{brand.products_count}</td>
-                                        <td className="px-6 py-4 space-x-2">
-                                            <Link
-                                                to={`/admin/brands/edit/${brand.id}`}
-                                                className="text-blue-500 hover:text-blue-700"
-                                            >
-                                                Edit
-                                            </Link>
-                                            <button
-                                                onClick={() => handleDelete(brand.id)}
-                                                className="text-red-500 hover:text-red-700"
-                                            >
-                                                Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </AdminLayout>
     );

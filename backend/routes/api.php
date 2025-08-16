@@ -9,49 +9,50 @@ use App\Http\Controllers\Admin\WithlistController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductImageController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\User\ProductController as UserProductController;
 use App\Http\Controllers\User\HomeController;
-use App\Http\Controllers\Admin\DashboardController;
 
+// Public routes
 Route::get('/', [HomeController::class, 'index']);
-// Routes for user 
 Route::post('/register-user', [AuthController::class, 'registerUser']);
-Route::post('/login-user', [AuthController::class, 'loginUser']);
+Route::post('/login', [AuthController::class, 'login']);
+
+// User routes
 Route::get('/products', [UserProductController::class, 'index']);
 Route::get('/products/{id}', [UserProductController::class, 'show']);
 Route::get('/products/category/{categoryId}', [UserProductController::class, 'getByCategory']);
 Route::get('/products/brand/{brandId}', [UserProductController::class, 'getByBrand']);
 
-// Route for admin
-Route::post('/register-admin', [AuthController::class, 'registerAdmin']);
-Route::post('/login-admin', [AuthController::class, 'loginAdmin']);
-
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
-
-
-// Admin Routes
-Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index']);
+// Protected routes
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
     
-    // Categories
-// Routes for user 
-Route::post('/register-user', [AuthController::class, 'registerUser']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
-
-// Routes for admin
-Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
-    Route::apiResource('categories', CategoryController::class);
+    // Admin routes
+    Route::prefix('admin')->group(function () {
+        // Dashboard
+        Route::get('/dashboard', [DashboardController::class, 'index']);
+        
+        // Products
+        Route::get('/products', [ProductController::class, 'index']);
+        Route::post('/products', [ProductController::class, 'store']);
+        Route::get('/products/{id}', [ProductController::class, 'show']);
+        Route::put('/products/{id}', [ProductController::class, 'update']);
+        Route::delete('/products/{id}', [ProductController::class, 'destroy']);
     
-    // Brands
-    Route::apiResource('brands', BrandController::class);
-    
-    // Products
-    Route::apiResource('products', ProductController::class);
+        // Categories
+        Route::get('/categories', [CategoryController::class, 'index']);
+        Route::post('/categories', [CategoryController::class, 'store']);
+        Route::get('/categories/{id}', [CategoryController::class, 'show']);
+        Route::put('/categories/{id}', [CategoryController::class, 'update']);
+        Route::delete('/categories/{id}', [CategoryController::class, 'destroy']);
+        
+        // Brands 
+        Route::get('/brands', [BrandController::class, 'index']);
+        Route::post('/brands', [BrandController::class, 'store']);
+        Route::get('/brands/{id}', [BrandController::class, 'show']);
+        Route::put('/brands/{id}', [BrandController::class, 'update']);
+        Route::delete('/brands/{id}', [BrandController::class, 'destroy']);
+    });
 });
 
-
-// Public Routes
-Route::get('/categories', [CategoryController::class, 'publicIndex']);
-Route::get('/brands', [BrandController::class, 'publicIndex']);

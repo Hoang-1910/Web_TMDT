@@ -29,7 +29,13 @@ const ProductForm = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/categories');
+            const token = localStorage.getItem('admin_token');
+            const response = await axios.get('http://localhost:8000/api/admin/categories', {
+                headers: { 
+                    Authorization: token,
+                    Accept: 'application/json'
+                }
+            });
             setCategories(response.data);
         } catch (error) {
             console.error('Failed to fetch categories:', error);
@@ -38,7 +44,13 @@ const ProductForm = () => {
 
     const fetchBrands = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/brands');
+            const token = localStorage.getItem('admin_token');
+            const response = await axios.get('http://localhost:8000/api/admin/brands', {
+                headers: { 
+                    Authorization: token,
+                    Accept: 'application/json'
+                }
+            });
             setBrands(response.data);
         } catch (error) {
             console.error('Failed to fetch brands:', error);
@@ -49,7 +61,10 @@ const ProductForm = () => {
         try {
             const token = localStorage.getItem('admin_token');
             const response = await axios.get(`http://localhost:8000/api/admin/products/${id}`, {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: { 
+                    Authorization: token,
+                    Accept: 'application/json'
+                }
             });
             setFormData(response.data);
         } catch (error) {
