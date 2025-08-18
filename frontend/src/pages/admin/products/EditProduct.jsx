@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ProductForm from "./ProductForm";
+import ProductForm from "../ProductForm";
 
 export default function EditProduct() {
   const { id } = useParams();
